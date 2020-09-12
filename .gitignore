@@ -1,4 +1,4 @@
 .vscode
 package-lock.json
-public
 dist
+node_modules
