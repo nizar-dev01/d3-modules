@@ -1,3 +1,4 @@
+import '@/style/global.scss';
 import { arc, select } from 'd3';
 
 const svg = select('svg');

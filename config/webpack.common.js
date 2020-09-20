@@ -38,6 +38,7 @@ module.exports = {
             template: './src/chart.html',
             filename: filename('chart'),
             favicon: './src/assets/favicon.ico',
+            minify,
             chunks:['barchart'], // by html-webpack-injector
         }),
         new HtmlWebpackInjector()
