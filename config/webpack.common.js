@@ -1,18 +1,49 @@
-const path = require('path');
-const resolve = (p) => path.resolve(__dirname,'../'+p);
+const
+    path = require('path'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    HtmlWebpackInjector = require('html-webpack-injector'),
+    resolve = (p) => path.resolve(__dirname,'../'+p),
+    isProd = () => process.env.NODE_ENV === 'production',
+    minify = isProd() ? {
+        removeAttributeQuotes:false,
+        collapseWhitespace:false,
+        removeComments:false
+    } : null,
+    filename =
+        (name,ext='html') => isProd() ?
+            `${name}.[hash].${ext}` :
+            `${name}.${ext}`;
+
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        face: './src/js/face.js',
+        barchart: './src/js/barchart.js'
+    },
+    output:{
+        filename:'js/[name].[hash].js',
+        path: path.resolve(__dirname,'../dist')
+    },
     mode: process.env.NODE_ENV,
+    plugins:[
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: './src/index.html',
+            filename: filename('index'),
+            favicon: './src/assets/favicon.ico',
+            minify,
+            chunks:['face','homestyle_head']
+        }),
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: './src/chart.html',
+            filename: filename('chart'),
+            favicon: './src/assets/favicon.ico',
+            chunks:['barchart'], // by html-webpack-injector
+        }),
+        new HtmlWebpackInjector()
+    ],
     module:{
         rules:[
-            {
-                test:/\.html$/,
-                use:[
-                    {
-                        loader: 'html-loader'
-                    }
-                ]
-            },
             {
                 test: /\.(png|jpe?g|gif)$/i,
                 use:{
