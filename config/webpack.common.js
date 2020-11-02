@@ -12,7 +12,19 @@ const
     filename =
         (name,ext='html') => isProd() ?
             `${name}.[hash].${ext}` :
-            `${name}.${ext}`;
+            `${name}.${ext}`
+const
+    htmlFactory = config =>{
+        const {
+            inject = true, template, filename,
+            favicon = './src/assets/favicon.ico',
+            minification = minify, chunks
+        } = config
+        return new HtmlWebpackPlugin({
+            inject, template, filename,
+            favicon, minification, chunks
+        })
+    }
 
 module.exports = {
     entry: {
@@ -26,28 +38,19 @@ module.exports = {
     },
     mode: process.env.NODE_ENV,
     plugins:[
-        new HtmlWebpackPlugin({
-            inject: true,
+        htmlFactory({
             template: './src/index.html',
             filename: filename('index'),
-            favicon: './src/assets/favicon.ico',
-            minify,
             chunks:['face','homestyle_head']
         }),
-        new HtmlWebpackPlugin({
-            inject: true,
+        htmlFactory({
             template: './src/chart.html',
             filename: filename('chart'),
-            favicon: './src/assets/favicon.ico',
-            minify,
             chunks:['barchart'], // by html-webpack-injector
         }),
-        new HtmlWebpackPlugin({
-            inject: true,
+        htmlFactory({
             template: './src/test.html',
             filename: filename('test'),
-            favicon: './src/assets/favicon.ico',
-            minify,
             chunks:['test'], // by html-webpack-injector
         }),
         new HtmlWebpackInjector()
