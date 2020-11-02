@@ -17,7 +17,8 @@ const
 module.exports = {
     entry: {
         face: './src/js/face.js',
-        barchart: './src/js/barchart.js'
+        barchart: './src/js/barchart.js',
+        test: './src/js/test.js'
     },
     output:{
         filename:'js/[name].[hash].js',
@@ -40,6 +41,14 @@ module.exports = {
             favicon: './src/assets/favicon.ico',
             minify,
             chunks:['barchart'], // by html-webpack-injector
+        }),
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: './src/test.html',
+            filename: filename('test'),
+            favicon: './src/assets/favicon.ico',
+            minify,
+            chunks:['test'], // by html-webpack-injector
         }),
         new HtmlWebpackInjector()
     ],

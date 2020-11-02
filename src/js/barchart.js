@@ -41,12 +41,16 @@ const render = (data) => {
         g.append('g').call(axisBottom(xScale))
          .attr('transform',`translate(0,${innerHeight})`);
 
-    g.selectAll('rect').data(data)
-        .enter().append('rect')
+    g.selectAll('rect')
+        .data(data)
+        .enter()
+        .append('rect')
             .attr('y', d=> yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
             .attr('width', d => xScale(xValue(d)) )
 }
+
+// load the csv file and start rendering
 csv('src/data/population.csv')
 .then(data=>{
     data.forEach(d=>d.population = +d.population * 1000);
